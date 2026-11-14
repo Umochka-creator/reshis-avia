@@ -264,7 +264,7 @@ class Calculation(BaseModel):
 
 
 @app.post("/api/calculate")
-def calculate(request: Calculation, user=Depends(current_user)):
+def calculate(request: Calculation):
     day = request.date.isoformat()
     key = (request.route, day)
     if key not in FORECAST:
