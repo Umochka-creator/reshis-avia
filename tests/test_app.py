@@ -20,13 +20,15 @@ def test_auth_and_math():
         assert client.get('/api/health').json()['records']==155
         assert len(client.get('/api/options').json()['routes'])==5
         payload={"route":"MOW-AER","date":"2026-06-12","price":9000,"quantile":0.5}
-        assert client.post('/api/calculate',json=payload).status_code==401
+        guest = client.post('/api/calculate',json=payload)
+        assert guest.status_code==200, guest.text
         username='judge_'+uuid.uuid4().hex[:9]
         assert client.post('/api/auth/register',json={'username':username,'password':'test-password-123'}).status_code==201
         assert client.get('/api/auth/me').json()['username']==username
         r=client.post('/api/calculate',json=payload)
         assert r.status_code==200, r.text
-        j=r.json(); row=FORECAST[(payload['route'],payload['date'])];p=ROUTES[payload['route']]
+        j=r.json(); assert j == guest.json(), 'Auth must not affect forecasting'
+        row=FORECAST[(payload['route'],payload['date'])];p=ROUTES[payload['route']]
         expected=max(0,row['0.5_base_demand']-p['price_sensitivity']*(9000-p['base_price']))
         assert abs(j['median_demand']-expected)<.02
         assert j['median_sales']==min(row['seats'],round(expected,2))
@@ -36,7 +38,7 @@ def test_auth_and_math():
         assert client.post('/api/calculate',json={**payload,'date':'2026-08-15'}).status_code==404
         assert client.post('/api/calculate',json={**payload,'price':-40}).status_code==422
         assert client.post('/api/auth/logout').status_code==200
-        assert client.post('/api/calculate',json=payload).status_code==401
+        assert client.post('/api/calculate',json=payload).json()==guest.json()
 
 
 def test_all_official_routes_and_price_limits():
