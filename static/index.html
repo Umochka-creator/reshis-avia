@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru"><head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#0c1220"/><title>Решись Авиа · Revenue Intelligence</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+</head><body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="logo"><div class="logo-mark" aria-hidden="true">✦</div><div>РЕШИСЬ <b>АВИА</b><small>REVENUE INTELLIGENCE</small></div></div>
+    <div class="nav-title">РАБОЧЕЕ ПРОСТРАНСТВО</div>
+    <nav><a class="active" href="#overview"><span>◈</span> Прогноз спроса</a><a href="#distribution"><span>▥</span> Сценарии</a><a href="#model"><span>◎</span> Методология</a></nav>
+    <div class="sidebar-bottom"><div class="status-dot"></div><div>Учебная аналитическая система<small>Модельные данные · лето 2026</small></div></div>
+  </aside>
+  <main class="main" id="overview">
+    <header class="topbar"><div class="crumb">ПРОГНОЗИРОВАНИЕ <span>/</span> УПРАВЛЕНИЕ ДОХОДНОСТЬЮ</div><div class="account"><div id="accountName" class="account-name">Гостевой режим</div><button class="small-btn" id="authBtn">Войти</button><button class="small-btn ghost hidden" id="logoutBtn">Выйти</button></div></header>
+    <div class="content">
+      <div class="hero-head"><div><div class="eyebrow">ИНТЕЛЛЕКТУАЛЬНАЯ СИСТЕМА ЦЕНООБРАЗОВАНИЯ</div><h1>Прогноз спроса <span>на авиабилеты</span></h1><p>Исследуйте спрос, оценивайте загрузку и выбирайте цены на основе девяти сценариев прогноза.</p></div><div class="version"><span class="version-pulse"></span> ПРОГНОЗ · ИЮНЬ 2026</div></div>
+      <div id="notification" class="notice hidden" role="status"></div>
+      <section class="app-grid">
+        <div class="card form-card"><div class="card-heading"><div><div class="eyebrow">01 / НАСТРОЙКА</div><h2>Параметры рейса</h2></div><div class="icon-box">↗</div></div>
+          <form id="forecastForm">
+            <div class="two-cols"><label>Пункт отправления<div class="field locked">Москва <span>МOW</span></div></label><label>Направление<select id="route" required></select></label></div>
+            <label>Дата вылета<input type="date" id="date" min="2026-06-01" max="2026-07-01" value="2026-06-12" required/></label>
+            <label>Цена билета, ₽<div class="input-price"><input type="number" id="price" min="1" max="100000" step="1" value="9000" required/><span>RUB</span></div><span id="priceRange" class="field-hint">Диапазон тарифов загружается…</span></label>
+            <label>Сценарий для рекомендации<select id="quantile"><option value="0.1">10% · пессимистичный</option><option value="0.3">30% · осторожный</option><option value="0.5" selected>50% · медианный</option><option value="0.7">70% · оптимистичный</option><option value="0.9">90% · высокий спрос</option></select></label>
+            <button type="submit" class="cta" id="calculateBtn">Рассчитать прогноз <span>↗</span></button>
+          </form>
+          <div class="form-footer">Результаты являются прогнозом, а не данными о фактических бронированиях.</div>
+        </div>
+        <div class="right-col">
+          <div class="card summary-card"><div class="card-heading compact"><div><div class="eyebrow">02 / РЕЗУЛЬТАТ</div><h2>Прогноз продаж</h2></div><div id="resultDate" class="date-chip">12.06.2026</div></div>
+            <div class="metrics"><div class="metric primary"><span>Прогноз продаж · медиана</span><strong id="sales">—</strong><small>пассажиров</small></div><div class="metric"><span>Останется мест (прогноз)</span><strong id="free">—</strong><small>кресел</small></div><div class="metric"><span>Рекомендуемая цена</span><strong id="recommended">—</strong><small>₽ / выбранный сценарий</small></div></div>
+            <div class="util-label"><span>Ожидаемая загрузка</span><b id="loadPct">—</b></div><div class="progress"><div id="progressFill"></div></div><div class="subline"><span id="seatsText">Вместимость: —</span><span id="routeText">Москва → —</span></div>
+          </div>
+          <div class="card chart-card" id="distribution"><div class="card-heading compact"><div><div class="eyebrow">03 / ВЕРОЯТНОСТИ</div><h2>Распределение спроса</h2></div><span class="tag">9 КВАНТИЛЕЙ</span></div>
+            <div class="legend"><span><i class="dot orange"></i> Прогноз спроса</span><span><i class="dot muted"></i> Вместимость</span></div>
+            <svg id="chart" viewBox="0 0 680 250" role="img" aria-label="Квантильная функция спроса, вместимость и медиана"></svg>
+            <div class="chart-caption">По горизонтали — возможный спрос в пассажирах, по вертикали — вероятность, что спрос не превысит указанное значение. Линия вместимости показывает ограничение продажи.</div>
+          </div>
+        </div>
+      </section>
+      <section class="card scenarios" id="scenarios"><div class="card-heading compact"><div><div class="eyebrow">04 / АНАЛИЗ НЕОПРЕДЕЛЁННОСТИ</div><h2>Все сценарии спроса</h2></div><span class="tag">РАСЧЁТ ПРИ ВАШЕЙ ЦЕНЕ</span></div><div class="table-wrap"><table><thead><tr><th>Квантиль</th><th>Вероятностный уровень</th><th>Желающих</th><th>Купят</th><th>Свободных мест</th><th>Оптимальная цена</th></tr></thead><tbody id="scenarioRows"><tr><td colspan="6">Войдите и рассчитайте прогноз.</td></tr></tbody></table></div></section>
+      <section class="method" id="model"><div class="method-icon">Σ</div><div><h3>Как устроен расчёт</h3><p>Для каждого рейса используется квантильный прогноз спроса из ML-модели. Изменение цены сдвигает спрос линейно, продажи ограничиваются вместимостью. Рассчитанная свободная ёмкость не является фактической доступностью билетов.</p><code>Желающих = max(0, Dq − b × (цена − базовая цена))</code><code>Купят = min(мест, желающих)</code><p id="dataDisclaimer" class="warning">Параметры маршрутов проверяются…</p></div></section>
+      <footer>Учебный проект для турнира «Решись!» · Технологии / Продвинутый уровень</footer>
+    </div>
+  </main>
+</div>
+<div class="modal hidden" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle"><div class="modal-sheet"><button class="close" id="closeAuth" aria-label="Закрыть">×</button><div class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</div><h2 id="authTitle">Войти в систему</h2><p>Для выполнения серверных расчётов необходима учётная запись.</p><form id="authForm"><label>Логин<input id="username" autocomplete="username" minlength="3" maxlength="32" placeholder="Например, analyst2026" required/></label><label>Пароль<input id="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required/></label><div class="auth-error hidden" id="authError"></div><button type="submit" class="cta" id="authSubmit">Войти <span>→</span></button></form><button id="switchAuth" class="text-btn">Нет аккаунта? Зарегистрироваться</button></div></div>
+<script src="/static/app.js" defer></script></body></html>
