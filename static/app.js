@@ -91,6 +91,13 @@ function renderResults(result){
   $('seatsText').textContent=`Вместимость: ${num(result.seats)} мест`;
   $('routeText').textContent=`Москва → ${result.destination}`;
   $('resultDate').textContent=result.date.split('-').reverse().join('.');
+  $('destinationCode').textContent=result.route.split('-')[1];
+  $('destinationName').textContent=result.destination;
+  document.querySelectorAll('.route-pick').forEach(button => {
+    const active = button.dataset.route === result.route;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
   const body=$('scenarioRows'); body.replaceChildren();
   for(const row of result.quantiles){
     const tr=document.createElement('tr'); if(row.quantile===0.5) tr.classList.add('median');
@@ -177,6 +184,12 @@ $('closeAuth').addEventListener('click',closeAuth);
 $('authModal').addEventListener('click',event=>{if(event.target===$('authModal'))closeAuth()});
 $('switchAuth').addEventListener('click',()=>openAuth(authMode==='login'?'register':'login'));
 $('route').addEventListener('change',()=>{setRouteBasePrice();calculate()});
+document.querySelectorAll('.route-pick').forEach(button => {
+  button.addEventListener('click', () => {
+    $('route').value=button.dataset.route; setRouteBasePrice(); calculate();
+    document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
 $('date').addEventListener('change',calculate);
 $('quantile').addEventListener('change',calculate);
 $('forecastForm').addEventListener('submit',event=>{event.preventDefault();calculate()});
