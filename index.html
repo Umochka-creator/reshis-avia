@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6f8fb" />
+  <meta name="description" content="Решись Авиа — прогноз спроса, цен и загрузки рейсов на основе девяти сценариев." />
+  <title>Решись Авиа — Aviation Intelligence</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<svg class="icons" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 17 9 11l4 3 8-9"/><path d="M15 5h6v6"/><path d="M3 3v18h18"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 16l9 5 9-5"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M8 7h8M8 11h5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="m21 3-8.5 18-2.4-7.1L3 11.5 21 3Z"/><path d="m10.1 13.9 5-5"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21v-2a7.5 7.5 0 0 1 15 0v2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+</svg>
+<div class="app-shell">
+  <aside class="sidebar" aria-label="Навигация">
+    <a class="brand" href="#overview" aria-label="Решись Авиа — главная">
+      <span class="brand-icon"><svg class="icon"><use href="#i-plane"/></svg></span>
+      <span class="brand-text"><strong>Решись<span>Авиа</span></strong><small>AVIATION INTELLIGENCE</small></span>
+    </a>
+    <div class="sidebar-section">РАБОЧАЯ ПАНЕЛЬ</div>
+    <nav class="menu">
+      <a class="menu-item active" href="#overview"><svg class="icon"><use href="#i-grid"/></svg><span>Обзор рейса</span></a>
+      <a class="menu-item" href="#distribution"><svg class="icon"><use href="#i-chart"/></svg><span>Прогноз спроса</span></a>
+      <a class="menu-item" href="#scenarios"><svg class="icon"><use href="#i-layers"/></svg><span>Все сценарии</span></a>
+      <a class="menu-item" href="#model"><svg class="icon"><use href="#i-book"/></svg><span>Методология</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="sidebar-small-card"><span class="small-card-icon"><svg class="icon"><use href="#i-chart"/></svg></span><div><b>9 сценариев</b><span>От осторожного до оптимистичного прогноза</span></div></div>
+      <div class="sidebar-foot"><span class="online-dot"></span>Данные загружены <span class="foot-side">2026</span></div>
+    </div>
+  </aside>
+
+  <div class="workspace" id="overview">
+    <header class="topbar">
+      <div class="breadcrumbs"><span>Платформа</span><span class="slash">/</span><strong>Аналитика спроса</strong></div>
+      <div class="header-right"><span class="header-context"><span class="online-dot"></span> Модель активна</span><div class="header-rule"></div><span id="accountName" class="account-name">Гостевой режим</span><button class="header-btn" id="authBtn"><svg class="icon"><use href="#i-user"/></svg> Войти</button><button class="header-btn hidden" id="logoutBtn">Выйти</button></div>
+    </header>
+
+    <main class="content">
+      <div class="page-heading"><span class="breadcrumb-tag">REVENUE MANAGEMENT / 01</span><h1>Управляйте ценой.<br><span>Предвидьте спрос.</span></h1><p>Аналитика авиаперевозок на основе вероятностных прогнозов: от цены билета до ожидаемой загрузки рейса.</p></div>
+
+      <section class="flight-strip" aria-label="Параметры прогнозного периода">
+        <div class="strip-head"><div class="strip-tiny">АНАЛИТИЧЕСКИЙ ПЕРИОД</div><strong>Июнь — июль 2026</strong><span>01.06 — 01.07</span></div>
+        <div class="strip-separator"></div>
+        <div class="strip-stat"><strong>05</strong><span>направлений<br>из Москвы</span></div>
+        <div class="strip-separator"></div>
+        <div class="strip-stat"><strong>155</strong><span>прогнозов<br>по рейсам</span></div>
+        <svg class="route-art" viewBox="0 0 380 110" aria-hidden="true"><defs><linearGradient id="flightLine" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#6392ff" stop-opacity=".05"/><stop offset="1" stop-color="#98bcff" stop-opacity=".8"/></linearGradient></defs><path d="M0 101 C80 16 126 86 186 44 S302 18 380 45" fill="none" stroke="url(#flightLine)" stroke-width="2" stroke-dasharray="5 7"/><path d="M72 24 C145 100 260 76 355 5" fill="none" stroke="#b3cafa" stroke-width="1" stroke-dasharray="3 8" opacity=".6"/><circle cx="190" cy="42" r="5" fill="#a1beff"/><circle cx="190" cy="42" r="11" stroke="#a1beff" stroke-opacity=".25" fill="none"/><path d="m313 21 27-7-12 11-7 12-2-12-9-4 21-5" fill="#c5d8ff"/></svg>
+      </section>
+
+      <div id="notification" class="notice hidden" role="alert"></div>
+
+      <section class="work-grid" aria-label="Расчёт и результаты">
+        <div class="panel config-panel">
+          <div class="section-heading"><div><span class="section-number">01 / КОНФИГУРАЦИЯ</span><h2>Настроить рейс</h2><p>Выберите параметры для расчёта прогноза</p></div><span class="section-icon"><svg class="icon"><use href="#i-plane"/></svg></span></div>
+          <form id="forecastForm">
+            <div class="form-block"><label for="route">Направление перелёта</label><div class="origin-destination"><div class="origin-chip"><span class="city-code">MOW</span><span>Москва</span></div><svg class="icon route-arrow"><use href="#i-arrow"/></svg><div class="destination"><select id="route" required aria-label="Пункт назначения"></select><svg class="icon select-icon"><use href="#i-chevron"/></svg></div></div></div>
+            <div class="form-block"><label for="date">Дата вылета</label><input id="date" class="form-input" type="date" min="2026-06-01" max="2026-07-01" value="2026-06-12" required /></div>
+            <div class="form-block"><div class="label-row"><label for="price">Цена билета</label><span class="mini-hint">RUB / пассажир</span></div><div class="price-input"><input type="number" id="price" min="1" max="100000" step="1" value="9000" required aria-describedby="priceRange"/><span>₽</span></div><div class="field-hint" id="priceRange">Загружаем тарифные ограничения…</div></div>
+            <div class="form-block scenario-control"><label for="quantile">Сценарий рекомендации</label><div class="select-wrap"><select id="quantile"><option value="0.1">10% — пессимистичный</option><option value="0.3">30% — осторожный</option><option value="0.5" selected>50% — медианный</option><option value="0.7">70% — оптимистичный</option><option value="0.9">90% — высокий спрос</option></select><svg class="icon select-icon"><use href="#i-chevron"/></svg></div></div>
+            <button type="submit" class="cta" id="calculateBtn"><span>Рассчитать прогноз</span><svg class="icon"><use href="#i-arrow"/></svg></button>
+          </form>
+          <div class="panel-footnote"><svg class="icon"><use href="#i-info"/></svg><span>Используются сценарные ML-прогнозы, а не текущие бронирования.</span></div>
+        </div>
+
+        <div class="results-stack">
+          <div class="panel result-panel">
+            <div class="section-heading result-heading"><div><span class="section-number">02 / КЛЮЧЕВЫЕ ПОКАЗАТЕЛИ</span><h2>Результат прогноза</h2></div><span class="date-tag" id="resultDate">12.06.2026</span></div>
+            <div class="kpi-grid">
+              <div class="kpi kpi-featured"><span class="kpi-label">Прогноз продаж <i>медиана</i></span><div class="kpi-figure"><strong id="sales">—</strong><span>пассажиров</span></div><div class="kpi-bottom"><span class="kpi-mark"><svg class="icon"><use href="#i-check"/></svg></span> Ожидаемые покупки при заданной цене</div></div>
+              <div class="kpi"><span class="kpi-label">Свободных кресел</span><div class="kpi-figure"><strong id="free">—</strong><span>мест</span></div><div class="kpi-bottom light-note">После прогнозируемых продаж</div></div>
+              <div class="kpi"><span class="kpi-label">Оптимальная цена <i>сценарий</i></span><div class="kpi-figure price-figure"><strong id="recommended">—</strong><span>₽</span></div><button id="applyPriceBtn" class="text-action" type="button">Применить эту цену <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+            </div>
+            <div class="occupancy"><div class="occupancy-head"><span>Прогнозируемая загрузка</span><strong id="loadPct">—</strong></div><div class="progress" role="progressbar" aria-label="Ожидаемая загрузка" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progressFill"></div></div><div class="occupancy-foot"><span id="seatsText">Вместимость: —</span><span id="routeText">Москва → —</span></div></div>
+          </div>
+          <div class="panel graph-panel" id="distribution"><div class="section-heading chart-heading"><div><span class="section-number">03 / АНАЛИТИКА РИСКА</span><h2>Распределение спроса</h2><p>Девять квантилей при выбранной цене</p></div><span class="graph-chip">9 СЦЕНАРИЕВ</span></div>
+            <div class="chart-legend"><span><i class="legend-line"></i>Вероятностный прогноз</span><span><i class="legend-dashed"></i>Вместимость</span></div>
+            <svg id="chart" viewBox="0 0 680 270" role="img" aria-label="Квантильная функция прогноза спроса и вместимость рейса"><title>Распределение прогнозируемого спроса</title></svg>
+            <div class="chart-footer"><span>Спрос, пассажиров <svg class="icon"><use href="#i-arrow"/></svg></span><span>50% — медиана прогноза</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel scenario-panel" id="scenarios"><div class="section-heading table-heading"><div><span class="section-number">04 / ДЕТАЛИЗАЦИЯ</span><h2>Все сценарии спроса</h2><p>Сравнение возможной загрузки и оптимальной цены для каждого квантиля.</p></div><div class="table-heading-side"><span class="slim-tag">РАСЧЁТ ПРИ ВАШЕЙ ЦЕНЕ</span></div></div><p class="table-scroll-hint">Таблица прокручивается влево и вправо →</p><div class="table-wrap"><table><thead><tr><th>Квантиль</th><th>Уровень спроса</th><th>Желающих</th><th>Продажи</th><th>Свободных мест</th><th>Оптимальная цена</th></tr></thead><tbody id="scenarioRows"><tr><td colspan="6" class="empty-table">Войдите в систему, чтобы получить прогноз</td></tr></tbody></table></div><div class="table-summary"><span><i class="tiny-median"></i> Медианный сценарий выделен в таблице</span><span>Данные основаны на ML-прогнозе</span></div></section>
+
+      <section class="method" id="model"><div class="method-intro"><span class="section-number">05 / МЕТОДОЛОГИЯ</span><h2>Как работает прогноз</h2><p>Для каждого рейса модель оценивает девять уровней возможного спроса. Стоимость билета изменяет прогнозируемое количество покупателей, а вместимость ограничивает продажи.</p></div><div class="formula-box"><span>МАТЕМАТИЧЕСКАЯ МОДЕЛЬ</span><code>Спрос = max(0, Dq − b × (цена − базовая цена))</code><code>Продажи = min(мест, спрос)</code><p id="dataDisclaimer">Параметры маршрутов проверяются…</p></div></section>
+      <footer class="footer"><span>РЕШИСЬ АВИА / AVIATION INTELLIGENCE</span><span>Учебный проект · Турнир «Решись!» · 2026</span></footer>
+    </main>
+  </div>
+</div>
+<div class="modal hidden" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle"><div class="modal-sheet"><div class="modal-visual"><span class="modal-kicker">AVIATION INTELLIGENCE</span><div class="modal-orbit"><svg viewBox="0 0 280 260" aria-hidden="true"><circle cx="140" cy="130" r="97" fill="none" stroke="#ffffff" stroke-opacity=".16"/><circle cx="140" cy="130" r="65" fill="none" stroke="#ffffff" stroke-opacity=".2"/><path d="M40 171C111 38 180 236 245 67" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity=".7" stroke-dasharray="5 8"/><circle cx="89" cy="98" r="5" fill="#bad7ff"/><path d="m154 104 42-14-22 19-8 31-7-23-24-6z" fill="#f9fdff"/></svg></div><h3>Данные, которые<br>помогают решать.</h3><p>5 направлений · 155 рейсов · 9 сценариев спроса</p></div><div class="modal-form"><button class="close" id="closeAuth" type="button" aria-label="Закрыть окно">×</button><span class="section-number">ДОСТУП К АНАЛИТИКЕ</span><h2 id="authTitle">Войти в систему</h2><p>Авторизуйтесь, чтобы запустить прогнозирование рейсов.</p><form id="authForm"><label for="username">Логин</label><div class="modal-input"><svg class="icon"><use href="#i-user"/></svg><input id="username" autocomplete="username" minlength="3" maxlength="32" placeholder="Например, analyst2026" required/></div><label for="password">Пароль</label><div class="modal-input"><svg class="icon"><use href="#i-lock"/></svg><input id="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" placeholder="Не менее 8 символов" required/></div><div class="auth-error hidden" id="authError" role="alert"></div><button class="cta" id="authSubmit" type="submit"><span>Войти</span><svg class="icon"><use href="#i-arrow"/></svg></button></form><button id="switchAuth" class="text-btn" type="button">Нет аккаунта? Зарегистрироваться</button><p class="auth-footnote">Учебная демонстрационная система. Не используйте пароли от личных аккаунтов.</p></div></div></div>
+<script src="/static/app.js" defer></script>
+</body>
+</html>
