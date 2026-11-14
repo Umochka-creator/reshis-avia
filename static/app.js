@@ -55,7 +55,7 @@ async function initialize(){
     $('dataDisclaimer').textContent='Базовые цены, чувствительность к цене и допустимые границы тарифов взяты из официального routes.csv; прогноз спроса — из my_forecast.csv. Расчёт выполняется на сервере.';
     try {user=await api('/api/auth/me')} catch(e) { if(e.status!==401) throw e; }
     refreshAccount();
-    if (user) await calculate(); else openAuth('register');
+    await calculate();
   } catch(error) {notice('Не удалось загрузить данные приложения: '+error.message);}
 }
 function setRouteBasePrice(){
@@ -70,7 +70,6 @@ function setRouteBasePrice(){
   }
 }
 async function calculate(){
-  if(!user){openAuth('login');return;}
   const price=Number($('price').value);
   if(!Number.isFinite(price)||price<=0){notice('Введите положительную цену');return;}
   hideNotice();
@@ -80,7 +79,6 @@ async function calculate(){
       route:$('route').value,date:$('date').value,price,quantile:Number($('quantile').value)})});
     lastResponse=data; renderResults(data);
   } catch(error){
-    if(error.status===401) {user=null;refreshAccount();openAuth('login');}
     notice(error.message);
   } finally{$('calculateBtn').disabled=false;}
 }
@@ -178,9 +176,9 @@ for(const nav of document.querySelectorAll('.menu-item')){
 $('closeAuth').addEventListener('click',closeAuth);
 $('authModal').addEventListener('click',event=>{if(event.target===$('authModal'))closeAuth()});
 $('switchAuth').addEventListener('click',()=>openAuth(authMode==='login'?'register':'login'));
-$('route').addEventListener('change',()=>{setRouteBasePrice();if(user)calculate()});
-$('date').addEventListener('change',()=>{if(user)calculate()});
-$('quantile').addEventListener('change',()=>{if(user)calculate()});
+$('route').addEventListener('change',()=>{setRouteBasePrice();calculate()});
+$('date').addEventListener('change',calculate);
+$('quantile').addEventListener('change',calculate);
 $('forecastForm').addEventListener('submit',event=>{event.preventDefault();calculate()});
 $('authForm').addEventListener('submit',async event=>{
   event.preventDefault();$('authError').classList.add('hidden'); $('authSubmit').disabled=true;
@@ -193,10 +191,7 @@ $('authForm').addEventListener('submit',async event=>{
 });
 $('logoutBtn').addEventListener('click',async()=>{
   try{await api('/api/auth/logout',{method:'POST'});}catch{}user=null;refreshAccount();
-  lastResponse=null;
-  $('sales').textContent='—';$('free').textContent='—';$('recommended').textContent='—';
-  $('loadPct').textContent='—';$('progressFill').style.width='0%';
-  $('progressFill').parentElement.setAttribute('aria-valuenow','0');
-  $('scenarioRows').replaceChildren();$('chart').replaceChildren();openAuth('login');
+  // Гостевой режим доступен и после выхода — прогноз остаётся на экране.
+  await calculate();
 });
 initialize();
