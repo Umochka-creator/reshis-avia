@@ -16,7 +16,9 @@ import sqlite3
 import time
 from datetime import date
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Literal
+
+from economics import economic_report, network_case
 
 from fastapi import Cookie, Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.responses import FileResponse
@@ -306,6 +308,13 @@ def calculate(request: Calculation):
         "median_free": median["unsold_seats"],
         "occupancy_pct": round(100 * median["sales"] / seats, 1),
         "quantiles": quantiles,
+        "economics": economic_report(request.route, day, row, settings, request.price),
         "explanation": "Спрос = max(0, базовый спрос − чувствительность × (цена − базовая цена)); "
                        "продажи = min(мест, спрос). Это сценарный прогноз, не фактические бронирования.",
     }
+
+
+@app.get("/api/network-case")
+def mathematical_network_case(scenario: Literal["normal", "peak", "snow"] = "peak"):
+    """Separate original six-market B&A exercise (not a forecast of the ML routes)."""
+    return network_case(scenario)

@@ -12,22 +12,22 @@
   <div class="blue-zone" id="overview">
     <header class="site-header wrap">
       <a class="brand" href="#overview" aria-label="Решись Авиа — на главную"><span class="brand-symbol" aria-hidden="true">✈</span><span>решись<span class="brand-thin">авиа</span></span></a>
-      <nav class="top-nav" aria-label="Разделы"><a class="menu-item selected" href="#overview">Прогноз</a><a class="menu-item" href="#scenarios">Сценарии</a><a class="menu-item" href="#model">Как это работает</a></nav>
+      <nav class="top-nav" aria-label="Разделы"><a class="menu-item selected" href="#overview">Прогноз</a><a class="menu-item" href="#economics">Экономика</a><a class="menu-item" href="#network-case">Маршрутная модель</a><a class="menu-item" href="#model">Как это работает</a></nav>
       <div class="account"><span id="accountName" class="account-name">Гостевой режим</span><button id="authBtn" class="account-button" type="button">Войти</button><button id="logoutBtn" class="account-button hidden" type="button">Выйти</button></div>
     </header>
     <div class="hero wrap">
       <span class="hero-overline">Аналитика авиаперевозок</span>
-      <h1>Узнайте, сколько билетов купят</h1>
-      <p>Выберите рейс, дату и цену — мы покажем прогноз спроса и подскажем, сколько может стоить билет.</p>
+      <h1>Узнайте спрос. Сравните прибыль.</h1>
+      <p>Выберите рейс и цену — покажем ожидаемые продажи, прибыльность тарифа и финансовый эффект оптимизации.</p>
       <form id="forecastForm" class="search-bar">
-        <div class="search-field fixed-origin"><span class="field-kicker">Откуда</span><div class="field-big">Москва <small>MOW</small></div></div>
+        <div class="search-field fixed-origin" title="В ML-данных организаторов предусмотрены только вылеты из Москвы"><span class="field-kicker">Откуда · фиксировано</span><div class="field-big">Москва <small>MOW</small></div></div>
         <label class="search-field destination-field" for="route"><span class="field-kicker">Куда</span><select id="route" required aria-label="Направление"></select></label>
         <label class="search-field date-field" for="date"><span class="field-kicker">Когда</span><input id="date" type="date" min="2026-06-01" max="2026-07-01" value="2026-06-12" required></label>
         <label class="search-field price-field" for="price"><span class="field-kicker">Цена билета</span><div class="price-shell"><input id="price" type="number" min="1" max="100000" step="1" value="9000" required aria-describedby="priceRange"><span>₽</span></div></label>
         <label class="search-field scenario-field" for="quantile"><span class="field-kicker">Сценарий</span><select id="quantile"><option value="0.1">10% · низкий</option><option value="0.3">30% · осторожный</option><option value="0.5" selected>50% · медианный</option><option value="0.7">70% · высокий</option><option value="0.9">90% · максимум</option></select></label>
         <button id="calculateBtn" class="search-submit" type="submit">Показать прогноз <span aria-hidden="true">→</span></button>
       </form>
-      <div class="search-note"><span id="priceRange">Загружаем цены…</span><span class="note-dot">•</span><span>Данные за 1 июня — 1 июля 2026 года</span></div>
+      <div class="search-note"><span id="priceRange">Загружаем цены…</span><span class="note-dot">•</span><span>5 направлений из Москвы · исторический период 01.06—01.07.2026</span></div>
     </div>
   </div>
 
@@ -60,8 +60,35 @@
       </div>
     </div>
 
+
+    <section class="economics-section" id="economics" aria-label="Финансовый анализ рейса">
+      <div class="section-title economy-title"><div><span class="section-overline">ПОЧЕМУ ЭТА ЦЕНА ВЫГОДНЕЕ</span><h2>Экономика рейса</h2><p>Переводим прогноз спроса в деньги — при том же самолёте и тех же данных.</p></div><span class="finance-source">По модели · ₽ на рейс</span></div>
+      <div class="economy-grid">
+        <article class="finance-hero"><div class="finance-eyebrow">Потенциал относительно базового тарифа</div><div id="upliftValue" class="finance-big">—</div><div class="finance-note" id="upliftText">Рассчитываем финансовый эффект…</div><div class="finance-summary"><div><span>Базовая цена</span><strong id="baseFare">—</strong></div><div><span>Цена максимальной ожидаемой прибыли</span><strong id="optimalFare">—</strong></div></div><button id="applyExpectedPrice" class="finance-apply" type="button">Применить выгодную цену <span>→</span></button></article>
+        <div class="finance-details">
+          <div class="finance-metric"><span>Ожидаемая выручка при вашей цене</span><strong id="financialRevenue">—</strong><small>Сценарная оценка до вычета затрат</small></div>
+          <div class="finance-metric"><span>Маржинальный вклад при вашей цене</span><strong id="financialMargin">—</strong><small>Выручка − переменные затраты</small></div>
+          <div class="finance-metric"><span>При максимальной ожидаемой прибыли</span><strong id="financialOptimal">—</strong><small>Сравнение с введённой ценой: <b id="financialDifference">—</b></small></div>
+          <div class="finance-metric"><span>Переменные затраты на пассажира</span><strong id="financialUnitCost">—</strong><small>Исходные параметры организаторов</small></div>
+        </div>
+      </div>
+      <div class="finance-analytics">
+        <div class="info-panel revenue-panel"><div class="panel-head"><div><h3>Как цена влияет на прибыль</h3><p>Каждая точка — расчёт с учётом ограничения вместимости.</p></div><span class="help-chip">ЦЕНА → ДЕНЬГИ</span></div><div class="revenue-legend"><span><i class="legend-expected"></i>Ожидаемый вклад</span><span><i class="legend-low"></i>Низкий спрос (10%)</span><span><i class="legend-current"></i>Ваша цена</span></div><svg id="profitChart" viewBox="0 0 680 275" role="img" aria-label="Зависимость маржинального вклада от цены билета"></svg><div class="plot-caption" id="profitChartHint">Максимум ожидаемой прибыли показан на графике.</div></div>
+        <div class="info-panel risk-panel"><div class="panel-head"><div><h3>А если спрос окажется низким?</h3><p>Сравните два подхода к выбору тарифа.</p></div></div><div class="risk-choice"><div class="risk-label">Максимум ожидаемого вклада</div><div class="risk-row"><strong id="riskExpectedPrice">—</strong><span>Сценарий 10%: <b id="riskExpectedLow">—</b></span></div></div><div class="risk-choice risk-choice-muted"><div class="risk-label">Осторожный тариф · оптимум при 10% спроса</div><div class="risk-row"><strong id="riskSafePrice">—</strong><span>Сценарий 10%: <b id="riskSafeLow">—</b></span></div></div><div class="risk-explanation" id="riskTradeoff">Осторожная стратегия снижает влияние низкого спроса, но может уменьшить средний результат.</div><button id="applySafePrice" class="risk-button" type="button">Выбрать осторожный тариф</button></div>
+      </div>
+      <p class="finance-disclaimer">Это <strong>прогнозный маржинальный вклад, не чистая прибыль авиакомпании</strong>. Учтены только переменные затраты на пассажира из routes.csv. Для оценки математического ожидания 9 квантилей усредняются с весами; за пределами 10-го и 90-го процентилей приняты их крайние значения. Фиксированные расходы и реальная реакция рынка на изменение тарифа не оценены.</p>
+    </section>
+
+    <section class="network-section" id="network-case" aria-label="Математическая оптимизация маршрутной сети">
+      <div class="section-title network-title"><div><span class="section-overline">ОТДЕЛЬНЫЙ МАТЕМАТИЧЕСКИЙ КЕЙС</span><h2>Когда один рейс влияет на другой</h2><p>Прямые и транзитные билеты конкурируют за общие кресла. Исходная задача «Бизнес и аналитика».</p></div><span class="finance-source">Петербург · Москва · Сочи</span></div>
+      <div class="network-tabs" role="group" aria-label="Выбор сценария математической задачи"><button class="network-tab" type="button" data-case="normal" aria-pressed="false">Обычный день</button><button class="network-tab selected" type="button" data-case="peak" aria-pressed="true">Пиковый спрос</button><button class="network-tab" type="button" data-case="snow" aria-pressed="false">Риск снегопада 20%</button></div>
+      <div class="network-overview"><div class="network-profit"><span id="networkKicker">Максимум прибыли в пиковый день</span><strong id="networkProfit">—</strong><p id="networkSummary">Рассчитываем эффект совместной оптимизации цен…</p></div><div class="network-insights"><div><span>Обычный день</span><strong id="networkNormal">—</strong></div><div><span>Пиковый день</span><strong id="networkPeak">—</strong></div><div><span>Изменение маршрута в пик</span><strong id="networkAlternate">—</strong></div><div><span>Ценность +1 кресла при пике</span><strong id="networkSeat">—</strong></div></div></div>
+      <div class="network-detail-grid"><article class="info-panel network-loads"><div class="panel-head"><div><h3>Загрузка четырёх участков</h3><p>150 кресел на каждом перелёте. Транзит учитывается на двух участках.</p></div></div><div id="networkLegs" class="leg-list"></div><p class="network-note" id="networkWeatherNote">В модели рассматривается полный дневной маршрут с возвращением в Петербург.</p></article><article class="info-panel network-fares"><div class="panel-head"><div><h3>Цены и продажи по шести рынкам</h3><p>Оптимальное распределение пассажиров по билетам.</p></div></div><div class="table-scroll"><table class="network-table"><thead><tr><th>Направление</th><th>Цена</th><th>Билетов</th></tr></thead><tbody id="networkRows"></tbody></table></div></article></div>
+      <p class="finance-disclaimer"><strong>Не смешиваем данные:</strong> этот раздел решает исходную математическую задачу с маршрутом П→М→С→М→П и коэффициентами спроса из первого блока кейса. Выше — отдельный ML-прогноз пяти направлений из Москвы. Значения не суммируются.</p>
+    </section>
+
     <section class="info-panel scenario-panel" id="scenarios"><div class="panel-head"><div><h3>Все сценарии спроса</h3><p>Сравните продажи, свободные кресла и рекомендуемые цены</p></div><span class="help-chip">От 10% до 90%</span></div><div class="table-scroll"><table><thead><tr><th>Вероятность</th><th>Сценарий</th><th>Спрос</th><th>Продажи</th><th>Свободных мест</th><th>Рекомендуемая цена</th></tr></thead><tbody id="scenarioRows"><tr><td colspan="6" class="empty-table">Выберите параметры рейса, чтобы увидеть прогноз</td></tr></tbody></table></div><p class="mobile-scroll">Таблицу можно прокрутить в сторону →</p></section>
-    <section class="method" id="model"><div class="method-text"><h2>Как мы считаем спрос</h2><p>Прогноз строится для пяти направлений из Москвы и учитывает девять квантилей. Цена влияет на количество желающих купить билет, а количество мест ограничивает возможные продажи.</p><p>Это учебная система аналитики, а не сервис продажи билетов.</p></div><div class="formula"><span>Формулы расчёта</span><code>Спрос = max(0, Dq − b × (цена − базовая цена))</code><code>Продажи = min(мест, спрос)</code><p id="dataDisclaimer">Загружаем информацию об источниках данных…</p></div></section>
+    <section class="method" id="model"><div class="method-text"><h2>Как мы считаем спрос</h2><p>Прогноз строится для пяти направлений из Москвы и учитывает девять квантилей. Цена влияет на количество желающих купить билет, а количество мест ограничивает возможные продажи.</p><p>Это учебная система аналитики, а не сервис продажи билетов.</p></div><div class="formula"><span>Формулы расчёта</span><code>Спрос = max(0, Dq − b × (цена − базовая цена))</code><code>Продажи = min(мест, спрос)</code><code>Маржинальный вклад = (цена − переменные затраты) × продажи</code><p id="dataDisclaimer">Загружаем информацию об источниках данных…</p></div></section>
   </main>
   <footer class="footer wrap"><span>решисьавиа</span><span>Учебный проект · Турнир «Решись!» · 2026</span></footer>
 
